@@ -1,0 +1,3 @@
+function parseHnmsMetarPage(html) {
+	
+}
