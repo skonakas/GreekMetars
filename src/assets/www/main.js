@@ -8,19 +8,28 @@ function onLoad() {
 }
 
 function onDeviceReady() {
+	$(document).ajaxStart(function() {
+		$.mobile.loading("show");
+	});
+
+	$(document).ajaxStop(function() {
+		$.mobile.loading("hide");
+	});
 }
 
 function getLatestMetar() {
 	var code = $("#code").val();
 	$.each(hnmsStations, function(i, station) {
-		if (station[0] == code) {
-			metar = getLatestMetarFromHnms(code, station[1]);
+		if (station[0].toLowerCase() == code.toLowerCase()) {
+			getLatestMetarFromHnms(code, station[1]);
 			return;
 		}
 	});
 	
 	getLatestMetarFromNoaa(code).done(function(data) {
-		setMetar(parseNoaaMetarPage(data));
+		var metar = parseNoaaMetarPage(data); 
+		if (metar.trim() != "") setMetar(metar);
+		else setMetar("Not Found");
 	});
 }
 
