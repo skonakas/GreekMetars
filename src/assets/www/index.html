@@ -16,22 +16,42 @@
         <script src="http://debug.phonegap.com/target/target-script-min.js#metar"></script>
      </head>
     <body onload="onLoad()">
-		<div data-role="page" data-theme="d">
+		<div data-role="page" data-theme="d" id="metar">
 			<div data-role="panel" id="menu" data-theme="c">
 		        <ul data-role="listview" data-theme="d">
-		            <li data-icon="back"><a href="#demo-intro" data-rel="back">Demo intro</a></li>
+		            <li><a href="#metar">METAR</a></li>
+		            <li><a href="#favorites">Favorites</a></li>
 		        </ul>
-			</div><!-- /panel -->
+			</div>
 
 			<div data-role="header" data-theme="c">
 		        <a href="#menu" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
-				<h1>jQuery Mobile Example</h1>
+				<h1>METAR</h1>
 			</div>
 
 			<div data-role="content">
 			    <input type="text" id="code" />
 			    <button onclick="getLatestMetar()">Get latest METAR</button>
 			    <div id="result"></div>
+			</div>
+		</div>
+
+		<div data-role="page" data-theme="d" id="favorites">
+			<div data-role="panel" id="menu" data-theme="c">
+		        <ul data-role="listview" data-theme="d">
+		            <li><a href="#metar">METAR</a></li>
+		            <li><a href="#favorites">Favorites</a></li>
+		        </ul>
+			</div>
+
+			<div data-role="header" data-theme="c">
+		        <a href="#menu" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+				<h1>Favorites</h1>
+			</div>
+
+			<div data-role="content">
+			    <input type="text" id="favorite" />
+			    <button onclick="addFavorite()">Add</button>
 			</div>
 		</div>
     </body>
