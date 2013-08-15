@@ -16,9 +16,30 @@
         <script src="http://debug.phonegap.com/target/target-script-min.js#metar"></script>
      </head>
     <body onload="onLoad()">
+		<div data-role="page" data-theme="d" id="all">
+			<div data-role="panel" id="menu" data-theme="c">
+		        <ul data-role="listview" data-theme="d">
+		            <li><a href="#all">All</a></li>
+		            <li><a href="#metar">METAR</a></li>
+		            <li><a href="#favorites">Favorites</a></li>
+		        </ul>
+			</div>
+
+			<div data-role="header" data-theme="c">
+		        <a href="#menu" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+				<h1>All</h1>
+			</div>
+
+			<div data-role="content">
+			    <button onclick="refreshAll()">Refresh</button>
+			    <div id="allResults"></div>
+			</div>
+		</div>
+
 		<div data-role="page" data-theme="d" id="metar">
 			<div data-role="panel" id="menu" data-theme="c">
 		        <ul data-role="listview" data-theme="d">
+		            <li><a href="#all">All</a></li>
 		            <li><a href="#metar">METAR</a></li>
 		            <li><a href="#favorites">Favorites</a></li>
 		        </ul>
@@ -39,6 +60,7 @@
 		<div data-role="page" data-theme="d" id="favorites">
 			<div data-role="panel" id="menu" data-theme="c">
 		        <ul data-role="listview" data-theme="d">
+		            <li><a href="#all">All</a></li>
 		            <li><a href="#metar">METAR</a></li>
 		            <li><a href="#favorites">Favorites</a></li>
 		        </ul>

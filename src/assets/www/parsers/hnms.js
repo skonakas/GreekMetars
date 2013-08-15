@@ -1,7 +1,26 @@
-function parseHnmsMetarPage(airport, html) {
-	var indexOfAirport = html.toLowerCase().indexOf(airport.toLowerCase());
+var hnmsStations = [
+                    	{ code: "LGTT", name: "Tatoi" },
+                    	{ code: "LGMG", name: "Megara" }
+                    ];
+
+function parseHnmsMetarPage(html) {
+	var indexOfAirport = html.indexOf('LG');
 	var indexOfEquals = html.indexOf("=", indexOfAirport);
 	return html.substring(indexOfAirport, indexOfEquals);
+}
+
+function getLatestMetarFromHnms(station, func) {
+	return $.ajax({
+		  url: 'http://www.hnms.gr/hnms/greek/observation/observation_html?&dr_city=' + station.name,
+		  dataType: "text"
+		}).done(function(data) {
+			$.ajax({
+				  url: 'http://www.hnms.gr' + parseHnmsObservationPage(data)[0],
+				  dataType: "text"
+				}).done(function(metar) {
+					func(parseHnmsMetarPage(metar), station);
+				});
+		});
 }
 
 function parseHnmsObservationPage(html) {
