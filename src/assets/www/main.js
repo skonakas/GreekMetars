@@ -45,7 +45,7 @@ function getLatestMetar() {
 }
 
 function appendMetar(metar, station) {
-	$('#allResults').append(station.text + ": " + metar + "<br />");
+	$('#allResults').append("<tr><td><strong>" + station.text + "</strong></td><td>" + metar + "</td></tr>");
 }
 
 function setMetar(metar) {
