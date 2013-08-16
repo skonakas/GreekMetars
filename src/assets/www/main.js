@@ -32,6 +32,7 @@ function refreshAll() {
 }
 
 function refreshFavorites() {
+	$("#favoritesResults").sortable();
 	refresh(favorites, $('#favoritesResults'), appendMetarToFavorites);
 }
 
