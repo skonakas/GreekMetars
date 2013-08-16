@@ -26,12 +26,12 @@
 			</div>
 
 			<div data-role="header" data-theme="c">
-		        <a href="#menu" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+		        <a href="#menu" data-icon="bars" data-iconpos="notext">Menu</a>
 				<h1>All</h1>
+				<a href="#" data-icon="refresh" data-iconpos="notext" onclick="refreshAll()">Refresh</a>
 			</div>
 
 			<div data-role="content">
-			    <button onclick="refreshAll()">Refresh</button>
 				<table id="allResults" data-role="table" class="ui-responsive"></table>
 			</div>
 		</div>
@@ -46,7 +46,7 @@
 			</div>
 
 			<div data-role="header" data-theme="c">
-		        <a href="#menu" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+		        <a href="#menu" data-icon="bars" data-iconpos="notext">Menu</a>
 				<h1>METAR</h1>
 			</div>
 
@@ -67,13 +67,14 @@
 			</div>
 
 			<div data-role="header" data-theme="c">
-		        <a href="#menu" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+		        <a href="#menu" data-icon="bars" data-iconpos="notext">Menu</a>
 				<h1>Favorites</h1>
+				<a href="#" data-icon="refresh" data-iconpos="notext" onclick="refreshFavorites()">Refresh</a>
 			</div>
 
 			<div data-role="content">
-			    <input type="text" id="favorite" />
-			    <button onclick="addFavorite()">Add</button>
+		        <a href="#">Edit</a>
+				<table id="favoritesResults" data-role="table" class="ui-responsive"></table>
 			</div>
 		</div>
     </body>

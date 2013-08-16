@@ -1,3 +1,10 @@
+var favorites = [
+						{ name: "Megara", text: "Μέγαρα" },
+						{ name: "Tanagra", text: "Τανάγρα" },
+						{ name: "Tatoi", text: "Τατόι" }
+                  ];
+
+
 function onLoad() {
     document.addEventListener("deviceready", onDeviceReady, true);
 }
@@ -20,12 +27,20 @@ function refreshAll() {
 		.done(function(html) {
 			var allStations = getAllStationsFromObservationPage(html);
 			var allResults = $('#allResults');
-			allResults.empty();
-
-			$.each(allStations, function(i, station) {
-				getLatestMetarFromHnms(station, appendMetar);
-			});
+			refresh(allStations, allResults, appendMetar);
 		});
+}
+
+function refreshFavorites() {
+	refresh(favorites, $('#favoritesResults'), appendMetarToFavorites);
+}
+
+function refresh(stations, placeholder, func) {
+	placeholder.empty();
+
+	$.each(stations, function(i, station) {
+		getLatestMetarFromHnms(station, func);
+	});
 }
 
 function getLatestMetar() {
@@ -46,6 +61,10 @@ function getLatestMetar() {
 
 function appendMetar(metar, station) {
 	$('#allResults').append("<tr><td><strong>" + station.text + "</strong></td><td>" + metar + "</td></tr>");
+}
+
+function appendMetarToFavorites(metar, station) {
+	$('#favoritesResults').append("<tr><td><strong>" + station.text + "</strong></td><td>" + metar + "</td></tr>");
 }
 
 function setMetar(metar) {
