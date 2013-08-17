@@ -1,8 +1,3 @@
-var hnmsStations = [
-                    	{ code: "LGTT", name: "Tatoi" },
-                    	{ code: "LGMG", name: "Megara" }
-                    ];
-
 function parseHnmsMetarPage(html) {
 	var indexOfAirport = html.indexOf('LG');
 	var indexOfEquals = html.indexOf("=", indexOfAirport);
@@ -61,5 +56,13 @@ function getAllStationsFromObservationPage(html) {
 		results.push(result);
 	}
 	
+	results.sort(compareStations);
+	
 	return results;
+}
+
+function compareStations(a, b) {
+	if (a.text < b.text) return -1;
+	if (a.text > b.text) return 1;
+	return 0;
 }

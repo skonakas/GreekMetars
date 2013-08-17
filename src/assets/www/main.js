@@ -27,7 +27,7 @@ function refreshAll() {
 		.done(function(html) {
 			var allStations = getAllStationsFromObservationPage(html);
 			var allResults = $('#allResults');
-			refresh(allStations, allResults, appendMetar);
+			refresh(allStations, allResults, appendMetarToAll);
 		});
 }
 
@@ -44,10 +44,16 @@ function refresh(stations, placeholder, func) {
 	});
 }
 
-function appendMetar(metar, station) {
-	$('#allResults').append("<tr><td><strong>" + station.text + "</strong></td><td>" + metar + "</td></tr>");
+function appendMetar(metar, station, control) {
+	control.append("<li><h3>" + station.text + "</h3><p style='white-space: normal'>" + metar + "</p></li>");
+	
+	control.listview("refresh");
+}
+
+function appendMetarToAll(metar, station) {
+	appendMetar(metar, station, $('#allResults'));
 }
 
 function appendMetarToFavorites(metar, station) {
-	$('#favoritesResults').append("<tr><td><strong>" + station.text + "</strong></td><td>" + metar + "</td></tr>");
+	appendMetar(metar, station, $('#favoritesResults'));
 }
