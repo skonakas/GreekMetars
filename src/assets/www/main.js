@@ -18,6 +18,27 @@ function onDeviceReady() {
 	$(document).ajaxStop(function() {
 		$.mobile.loading("hide");
 	});
+	
+	setupFavorites();
+}
+
+function setupFavorites() {
+	$.ajax({
+		  url: 'http://www.hnms.gr/hnms/greek/observation/observation_region_html',
+		  dataType: "text"
+		})
+		.done(function(html) {
+			var allStations = getAllStationsFromObservationPage(html);
+			var selectNewStation = $("#selectNewStation");
+			
+			$.each(allStations, function(i, station) {
+				selectNewStation.append("<option value=" + station.name + ">" + station.text + "</option>");
+			});
+			selectNewStation.selectmenu("refresh");
+		});
+	
+	$("#favoritesResults").sortable();
+	showFavoriteStations();
 }
 
 function refreshAll() {
@@ -33,8 +54,16 @@ function refreshAll() {
 }
 
 function refreshFavorites() {
-	$("#favoritesResults").sortable();
 	refresh(favorites, $('#favoritesResults'), appendMetarToFavorites);
+}
+
+function showFavoriteStations() {
+	var control = $('#favoritesResults');
+	control.empty();
+
+	$.each(favorites, function(i, station) {
+		appendStationText(station, control);
+	});
 }
 
 function refresh(stations, placeholder, func) {
@@ -46,9 +75,15 @@ function refresh(stations, placeholder, func) {
 }
 
 function appendMetar(metar, station, control) {
-	control.append("<li><h3>" + station.text + "</h3><p style='white-space: normal'>" + metar + "</p></li>");
+	var metarText = metar != null ? "<p style='white-space: normal'>" + metar + "</p>" : "";
+	control.append("<li data-icon='delete'><a href='#'><h3>" + station.text + "</h3>" + 
+			metarText + "</a><a href='#' onclick='alert(\"a\")' class='deleteFromList' style='display: none'></a></li>");
 	
 	control.listview("refresh");
+}
+
+function appendStationText(station, control) {
+	appendMetar(null, station, control);
 }
 
 function appendMetarToAll(metar, station) {
@@ -65,9 +100,12 @@ function changeMode(edit) {
 	if (editMode) {
 		$('#startEditDiv').hide();
 		$('#stopEditDiv').show();
+		$('.deleteFromList').show();
+		$('#addDiv').show();
 	} else {
 		$('#startEditDiv').show();
 		$('#stopEditDiv').hide();
-		
+		$('.deleteFromList').hide();
+		$('#addDiv').hide();
 	}
 }
