@@ -44,30 +44,10 @@ function refresh(stations, placeholder, func) {
 	});
 }
 
-function getLatestMetar() {
-	var code = $("#code").val();
-	$.each(hnmsStations, function(i, station) {
-		if (station.code.toLowerCase() == code.toLowerCase()) {
-			getLatestMetarFromHnms(station, setMetar);
-			return;
-		}
-	});
-	
-	getLatestMetarFromNoaa(code).done(function(data) {
-		var metar = parseNoaaMetarPage(data); 
-		if (metar.trim() != "") setMetar(metar);
-		else setMetar("Not Found");
-	});
-}
-
 function appendMetar(metar, station) {
 	$('#allResults').append("<tr><td><strong>" + station.text + "</strong></td><td>" + metar + "</td></tr>");
 }
 
 function appendMetarToFavorites(metar, station) {
 	$('#favoritesResults').append("<tr><td><strong>" + station.text + "</strong></td><td>" + metar + "</td></tr>");
-}
-
-function setMetar(metar) {
-	$('#result').html(metar);
 }

@@ -12,64 +12,24 @@
 		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 		<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
         <script type="text/javascript" src="parsers/hnms.js"></script>
-        <script type="text/javascript" src="parsers/noaa.js"></script>
+        <script type="text/javascript" src="storage.js"></script>
         <script type="text/javascript" src="main.js"></script>
         <script src="http://debug.phonegap.com/target/target-script-min.js#metar"></script>
      </head>
     <body onload="onLoad()">
-		<div data-role="page" data-theme="d" id="all">
-			<div data-role="panel" id="menu" data-theme="c">
-		        <ul data-role="listview" data-theme="d">
-		            <li><a href="#all">All</a></li>
-		            <li><a href="#metar">METAR</a></li>
-		            <li><a href="#favorites">Favorites</a></li>
-		        </ul>
-			</div>
-
-			<div data-role="header" data-theme="c">
-		        <a href="#menu" data-icon="bars" data-iconpos="notext">Menu</a>
-				<h1>All</h1>
-				<a href="#" data-icon="refresh" data-iconpos="notext" onclick="refreshAll()">Refresh</a>
-			</div>
-
-			<div data-role="content">
-				<table id="allResults" data-role="table" class="ui-responsive"></table>
-			</div>
-		</div>
-
-		<div data-role="page" data-theme="d" id="metar">
-			<div data-role="panel" id="menu" data-theme="c">
-		        <ul data-role="listview" data-theme="d">
-		            <li><a href="#all">All</a></li>
-		            <li><a href="#metar">METAR</a></li>
-		            <li><a href="#favorites">Favorites</a></li>
-		        </ul>
-			</div>
-
-			<div data-role="header" data-theme="c">
-		        <a href="#menu" data-icon="bars" data-iconpos="notext">Menu</a>
-				<h1>METAR</h1>
-			</div>
-
-			<div data-role="content">
-			    <input type="text" id="code" />
-			    <button onclick="getLatestMetar()">Get latest METAR</button>
-			    <div id="result"></div>
-			</div>
-		</div>
 
 		<div data-role="page" data-theme="d" id="favorites">
 			<div data-role="panel" id="menu" data-theme="c">
 		        <ul data-role="listview" data-theme="d">
-		            <li><a href="#all">All</a></li>
-		            <li><a href="#metar">METAR</a></li>
-		            <li><a href="#favorites">Favorites</a></li>
+		            <li><a href="#favorites">My METARs</a></li>
+		            <li><a href="#all">All METARs</a></li>
+		            <li><a href="#settings">Settings</a></li>
 		        </ul>
 			</div>
 
 			<div data-role="header" data-theme="c">
 		        <a href="#menu" data-icon="bars" data-iconpos="notext">Menu</a>
-				<h1>Favorites</h1>
+				<h1>My METARs</h1>
 				<a href="#" data-icon="refresh" data-iconpos="notext" onclick="refreshFavorites()">Refresh</a>
 			</div>
 
@@ -80,5 +40,26 @@
 				</table>
 			</div>
 		</div>
+
+		<div data-role="page" data-theme="d" id="all">
+			<div data-role="panel" id="menu" data-theme="c">
+		        <ul data-role="listview" data-theme="d">
+		            <li><a href="#favorites">My METARs</a></li>
+		            <li><a href="#all">All METARs</a></li>
+		            <li><a href="#settings">Settings</a></li>
+		        </ul>
+			</div>
+
+			<div data-role="header" data-theme="c">
+		        <a href="#menu" data-icon="bars" data-iconpos="notext">Menu</a>
+				<h1>All METARs</h1>
+				<a href="#" data-icon="refresh" data-iconpos="notext" onclick="refreshAll()">Refresh</a>
+			</div>
+
+			<div data-role="content">
+				<table id="allResults" data-role="table" class="ui-responsive"></table>
+			</div>
+		</div>
+
     </body>
 </html>
