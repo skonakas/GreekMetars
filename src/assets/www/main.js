@@ -4,6 +4,7 @@ var favorites = [
 						{ name: "Tatoi", text: "Τατόι" }
                   ];
 
+var editMode = false;
 
 function onLoad() {
     document.addEventListener("deviceready", onDeviceReady, true);
@@ -56,4 +57,17 @@ function appendMetarToAll(metar, station) {
 
 function appendMetarToFavorites(metar, station) {
 	appendMetar(metar, station, $('#favoritesResults'));
+}
+
+function changeMode(edit) {
+	editMode = edit;
+	
+	if (editMode) {
+		$('#startEditDiv').hide();
+		$('#stopEditDiv').show();
+	} else {
+		$('#startEditDiv').show();
+		$('#stopEditDiv').hide();
+		
+	}
 }

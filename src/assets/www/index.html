@@ -34,7 +34,8 @@
 			</div>
 
 			<div data-role="content">
-		        <button data-inline="true">Edit</button>
+		        <div id="startEditDiv"><button data-inline="true" onclick="changeMode(true)">Edit List</button></div>
+		        <div id="stopEditDiv" style="display: none"><button id="stopEdit" data-inline="true" onclick="changeMode(false)">Done Editing</button></div>
 		        <ul id="favoritesResults" data-role="listview" data-inset="true"></ul>
 			</div>
 		</div>
