@@ -1,5 +1,7 @@
 var favorites = [];
-
+var allStations = [];
+var allStationsLoaded = false;
+var allStationsLoadingEvent;
 var editMode = false;
 
 function onLoad() {
@@ -15,40 +17,60 @@ function onDeviceReady() {
 		$.mobile.loading("hide");
 	});
 	
-	setupFavorites();
+	setup();
 }
 
-function setupFavorites() {
+function setup() {
 	storage.loadFavorites();
 	
-	$.ajax({
+	allStationsLoadingEvent = $.ajax({
 		  url: 'http://www.hnms.gr/hnms/greek/observation/observation_region_html',
 		  dataType: "text"
 		})
 		.done(function(html) {
-			var allStations = getAllStationsFromObservationPage(html);
-			var selectNewStation = $("#selectNewStation");
-			
-			$.each(allStations, function(i, station) {
-				selectNewStation.append("<option value='" + station.name + "|" + station.text + "'>" + station.text + "</option>");
-			});
-			selectNewStation.selectmenu("refresh");
+			allStations = getAllStationsFromObservationPage(html);
+			allStationsLoaded = true;
 		});
+	
+	$(document).on( "pageinit", "#all", function(event) {
+		if (allStationsLoaded) {
+			fillAllResults();
+		} else {
+			allStationsLoadingEvent.done(function() {
+				fillAllResults();
+			});
+		}
+	});
+	
+	allStationsLoadingEvent.done(function() {
+		fillSelectNewStation();
+	});
 	
 	$("#favoritesResults").sortable();
 	showFavoriteStations();
 }
 
+function fillSelectNewStation() {
+	var selectNewStation = $("#selectNewStation");
+	
+	$.each(allStations, function(i, station) {
+		selectNewStation.append("<option value='" + station.name + "|" + station.text + "'>" + station.text + "</option>");
+	});
+
+	selectNewStation.selectmenu("refresh");
+}
+
+function fillAllResults() {
+	var allResults = $('#allResults');
+	
+	$.each(allStations, function(i, station) {
+		appendStationText(station, allResults);
+	});
+}
+
 function refreshAll() {
-	$.ajax({
-		  url: 'http://www.hnms.gr/hnms/greek/observation/observation_region_html',
-		  dataType: "text"
-		})
-		.done(function(html) {
-			var allStations = getAllStationsFromObservationPage(html);
-			var allResults = $('#allResults');
-			refresh(allStations, allResults, appendMetarToAll);
-		});
+	var allResults = $('#allResults');
+	refresh(allStations, allResults, appendMetarToAll);
 }
 
 function refreshFavorites() {
@@ -122,6 +144,8 @@ function removeFromFavorites(stationName) {
 	if (position > -1) {
 		favorites.splice(position, 1);
 		storage.saveFavorites();
+
+		showFavoriteStations();
 	}
 }
 
@@ -131,4 +155,6 @@ function addStation() {
 	
 	favorites.push({ name: values[0], text: values[1] });
 	storage.saveFavorites();
+
+	showFavoriteStations();
 }
