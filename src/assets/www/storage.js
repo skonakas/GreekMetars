@@ -1,8 +1,9 @@
 var storage = {
-	saveFavorites: function(favorites) {
-		window.localStorage.setItem("favorites", favorites);
+	saveFavorites: function() {
+		window.localStorage.setItem("favorites", JSON.stringify(favorites));
 	},
 	loadFavorites: function() {
-		return window.localStorage.getItem("favorites");		
+		var favoritesStorage = window.localStorage.getItem("favorites");
+		if (favoritesStorage != null) favorites = JSON.parse(favoritesStorage);
 	}
 };

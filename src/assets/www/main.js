@@ -1,8 +1,4 @@
-var favorites = [
-						{ name: "Megara", text: "Μέγαρα" },
-						{ name: "Tanagra", text: "Τανάγρα" },
-						{ name: "Tatoi", text: "Τατόι" }
-                  ];
+var favorites = [];
 
 var editMode = false;
 
@@ -23,6 +19,8 @@ function onDeviceReady() {
 }
 
 function setupFavorites() {
+	storage.loadFavorites();
+	
 	$.ajax({
 		  url: 'http://www.hnms.gr/hnms/greek/observation/observation_region_html',
 		  dataType: "text"
@@ -32,7 +30,7 @@ function setupFavorites() {
 			var selectNewStation = $("#selectNewStation");
 			
 			$.each(allStations, function(i, station) {
-				selectNewStation.append("<option value=" + station.name + ">" + station.text + "</option>");
+				selectNewStation.append("<option value='" + station.name + "|" + station.text + "'>" + station.text + "</option>");
 			});
 			selectNewStation.selectmenu("refresh");
 		});
@@ -54,6 +52,8 @@ function refreshAll() {
 }
 
 function refreshFavorites() {
+	if (editMode) return;
+	
 	refresh(favorites, $('#favoritesResults'), appendMetarToFavorites);
 }
 
@@ -77,7 +77,7 @@ function refresh(stations, placeholder, func) {
 function appendMetar(metar, station, control) {
 	var metarText = metar != null ? "<p style='white-space: normal'>" + metar + "</p>" : "";
 	control.append("<li data-icon='delete'><a href='#'><h3>" + station.text + "</h3>" + 
-			metarText + "</a><a href='#' onclick='alert(\"a\")' class='deleteFromList' style='display: none'></a></li>");
+			metarText + "</a><a href='#' onclick='removeFromFavorites(\"" + station.name + "\")' class='deleteFromList' style='display: none'></a></li>");
 	
 	control.listview("refresh");
 }
@@ -108,4 +108,27 @@ function changeMode(edit) {
 		$('.deleteFromList').hide();
 		$('#addDiv').hide();
 	}
+}
+
+function removeFromFavorites(stationName) {
+	var position = -1;
+	$.each(favorites, function(i, station) {
+		if (station.name == stationName) {
+			position = i;
+			return false;
+		}
+	});
+	
+	if (position > -1) {
+		favorites.splice(position, 1);
+		storage.saveFavorites();
+	}
+}
+
+function addStation() {
+	var values = $('#selectNewStation').val().split("|");
+	if (values.length != 2) return;
+	
+	favorites.push({ name: values[0], text: values[1] });
+	storage.saveFavorites();
 }
