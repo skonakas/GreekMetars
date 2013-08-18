@@ -98,8 +98,10 @@ function refresh(stations, placeholder, func) {
 
 function appendMetar(metar, station, control) {
 	var metarText = metar != null ? "<p style='white-space: normal'>" + metar + "</p>" : "";
-	control.append("<li data-icon='delete'><a href='#'><h3>" + station.text + "</h3>" + 
-			metarText + "</a><a href='#' onclick='removeFromFavorites(\"" + station.name + "\")' class='deleteFromList' style='display: none'></a></li>");
+	var deleteFirstText = control[0].id == "favoritesResults" ? " data-icon='delete'><a href='#'" : ""; 
+	var deleteSecondText = control[0].id == "favoritesResults" ? "<a href='#' onclick='removeFromFavorites(\"" + station.name + "\")' class='deleteFromList' style='display: none'></a></a>" : ""; 
+	control.append("<li" + deleteFirstText + "><h3>" + station.text + "</h3>" + 
+			metarText + deleteSecondText + "</li>");
 	
 	control.listview("refresh");
 }
