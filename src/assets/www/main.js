@@ -46,7 +46,25 @@ function setup() {
 		fillSelectNewStation();
 	});
 	
-	$("#favoritesResults").sortable();
+	$("#favoritesResults").sortable({
+		disabled: true,
+		update: function(event, ui) {
+			var favoritesResults = $('#favoritesResults');
+			favorites = [];
+
+			$.each(favoritesResults[0].children, function(i, li) {
+				var liObj = $(li);
+				var stationName = liObj.data('station-name');
+				var stationText = liObj.data('station-text');
+
+				favorites.push({ name: stationName, text: stationText });
+			});
+
+			favoritesResults.listview('refresh');
+			storage.saveFavorites();
+		}
+	});
+	
 	showFavoriteStations();
 }
 
@@ -98,9 +116,12 @@ function refresh(stations, placeholder, func) {
 
 function appendMetar(metar, station, control) {
 	var metarText = metar != null ? "<p style='white-space: normal'>" + metar + "</p>" : "";
-	var deleteFirstText = control[0].id == "favoritesResults" ? " data-icon='delete'><a href='#'" : ""; 
-	var deleteSecondText = control[0].id == "favoritesResults" ? "<a href='#' onclick='removeFromFavorites(\"" + station.name + "\")' class='deleteFromList' style='display: none'></a></a>" : ""; 
-	control.append("<li" + deleteFirstText + "><h3>" + station.text + "</h3>" + 
+	var deleteFirstText = control[0].id == "favoritesResults" ? "<a href='#'>" : ""; 
+	var deleteSecondText = control[0].id == "favoritesResults" ?
+			"</a><a data-icon='delete' href='#' onclick='removeFromFavorites(\"" + station.name + "\")' " +
+					"class='deleteFromList' style='display: none'></a>" : ""; 
+	control.append("<li data-station-name='" + station.name + "' data-station-text='" + station.text + "'>" +
+			deleteFirstText + "<h3>" + station.text + "</h3>" + 
 			metarText + deleteSecondText + "</li>");
 	
 	control.listview("refresh");
@@ -126,11 +147,13 @@ function changeMode(edit) {
 		$('#stopEditDiv').show();
 		$('.deleteFromList').show();
 		$('#addDiv').show();
+		$("#favoritesResults").sortable("enable");
 	} else {
 		$('#startEditDiv').show();
 		$('#stopEditDiv').hide();
 		$('.deleteFromList').hide();
 		$('#addDiv').hide();
+		$("#favoritesResults").sortable("disable");
 	}
 }
 
